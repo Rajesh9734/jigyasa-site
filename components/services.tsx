@@ -59,7 +59,7 @@ export function Services() {
           {services.map((service) => (
             <div
               key={service.title}
-              className="group rounded-xl bg-white p-6 shadow-sm transition-all hover:shadow-lg"
+              className="group rounded-xl bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl"
             >
               <div
                 className={`mb-4 flex h-14 w-14 items-center justify-center rounded-xl ${service.bgColor}`}

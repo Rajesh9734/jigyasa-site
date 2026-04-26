@@ -12,7 +12,7 @@ export function Hero() {
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src="/images/hero-bg.png"
+          src="/images/hero-bg-new.png"
           alt="Trading background"
           fill
           className="object-cover opacity-40"
