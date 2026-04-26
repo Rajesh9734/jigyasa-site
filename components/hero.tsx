@@ -25,20 +25,20 @@ export function Hero() {
       </div>
 
       {/* Stock Chart Numbers - Decorative */}
-      <div className="absolute right-20 top-20 hidden text-white/20 text-sm font-mono lg:block">
+      <div className="absolute right-20 top-20 hidden text-white/20 text-sm font-mono xl:block">
         <div>12.002</div>
         <div className="mt-8">17.002</div>
         <div className="mt-8">25.01</div>
       </div>
-      <div className="absolute right-8 top-32 hidden text-white/20 text-sm font-mono lg:block">
+      <div className="absolute right-8 top-32 hidden text-white/20 text-sm font-mono xl:block">
         <div>28.002</div>
         <div className="mt-16">27.10</div>
         <div className="mt-8">07.28</div>
       </div>
 
-      <div className="relative mx-auto flex max-w-7xl flex-col items-center gap-12 px-6 py-16 lg:flex-row lg:px-12 lg:py-24">
+      <div className="relative mx-auto flex max-w-7xl flex-col items-center gap-8 px-6 py-16 md:flex-row md:gap-12 md:px-12 md:py-20 lg:py-24">
         {/* Left Content */}
-        <div className="flex-1 text-center lg:text-left">
+        <div className="flex-1 text-center md:text-left">
           <p className="mb-4 text-sm font-semibold uppercase tracking-wider text-[#f5a623]">
             Empowering Financial Success
           </p>
@@ -48,10 +48,10 @@ export function Hero() {
             <span className="text-[#f5a623]">Succeed.</span>
           </h1>
           <p className="mb-8 max-w-lg text-lg text-gray-300">
-            NEPSE & FX training, capital investment and advisory services to
+            NEPSE &amp; FX training, capital investment and advisory services to
             help you grow your wealth and achieve financial freedom.
           </p>
-          <div className="flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
+          <div className="flex flex-col gap-4 sm:flex-row sm:justify-center md:justify-start">
             <Button className="rounded-full bg-gold px-8 py-6 text-base font-semibold text-navy shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-gold-dark hover:shadow-lg">
               Explore Courses
             </Button>
@@ -65,11 +65,72 @@ export function Hero() {
         </div>
 
         {/* Right Content - Stats Cards & Graphic */}
-        <div className="relative flex-1">
-          {/* Floating Stats Cards */}
-          <div className="relative h-[400px] w-full lg:h-[500px]">
+        <div className="relative flex-1 w-full">
+          {/* 
+            Mobile (< md): 2×2 grid, full width below hero text
+            Tablet (md to xl): Single column stack, side by side with text
+            Desktop (xl+): Absolute positioned floating cards
+          */}
+          
+          {/* Mobile & Tablet: Grid/Stack layout */}
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-1 md:gap-3 xl:hidden">
             {/* 500+ Students Card */}
-            <div className="animate-float absolute left-0 top-0 z-10 rounded-lg bg-white p-4 shadow-xl lg:left-10 lg:top-25">
+            <div className="animate-float rounded-lg bg-white p-3 sm:p-4 shadow-xl">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#0a1a2e]">
+                  <Users className="h-5 w-5 text-[#f5a623]" />
+                </div>
+                <div>
+                  <p className="text-lg sm:text-xl font-bold text-[#0a1a2e]">500+</p>
+                  <p className="text-[10px] sm:text-xs text-gray-500">Students Trained</p>
+                </div>
+              </div>
+            </div>
+
+            {/* 90%+ Success Rate Card */}
+            <div className="animate-float-delayed rounded-lg bg-white p-3 sm:p-4 shadow-xl">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#f5a623]">
+                  <Award className="h-5 w-5 text-[#0a1a2e]" />
+                </div>
+                <div>
+                  <p className="text-lg sm:text-xl font-bold text-[#0a1a2e]">90%+</p>
+                  <p className="text-[10px] sm:text-xs text-gray-500">Success Rate</p>
+                </div>
+              </div>
+            </div>
+
+            {/* 3+ Years Card */}
+            <div className="animate-float-slow rounded-lg bg-white p-3 sm:p-4 shadow-xl">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#0a1a2e]">
+                  <Clock className="h-5 w-5 text-[#f5a623]" />
+                </div>
+                <div>
+                  <p className="text-lg sm:text-xl font-bold text-[#0a1a2e]">3+</p>
+                  <p className="text-[10px] sm:text-xs text-gray-500">Years of Experience</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Dedicated Support Card */}
+            <div className="animate-float rounded-lg bg-white p-3 sm:p-4 shadow-xl">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#f5a623]">
+                  <Headphones className="h-5 w-5 text-[#0a1a2e]" />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-[#0a1a2e]">Dedicated</p>
+                  <p className="text-[10px] sm:text-xs text-gray-500">Support</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Desktop: Absolute positioned floating cards (xl: 1280px+) */}
+          <div className="relative hidden h-[500px] w-full xl:block">
+            {/* 500+ Students Card */}
+            <div className="animate-float absolute left-10 top-25 z-10 rounded-lg bg-white p-4 shadow-xl">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#0a1a2e]">
                   <Users className="h-5 w-5 text-[#f5a623]" />
@@ -82,7 +143,7 @@ export function Hero() {
             </div>
 
             {/* 90%+ Success Rate Card */}
-            <div className="animate-float-delayed absolute right-0 top-5 z-10 rounded-lg bg-white p-4 shadow-xl lg:right-30 lg:top-20">
+            <div className="animate-float-delayed absolute right-30 top-20 z-10 rounded-lg bg-white p-4 shadow-xl">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#f5a623]">
                   <Award className="h-5 w-5 text-[#0a1a2e]" />
@@ -95,7 +156,7 @@ export function Hero() {
             </div>
 
             {/* 3+ Years Card */}
-            <div className="animate-float-slow absolute bottom-32 left-0 z-10 rounded-lg bg-white p-4 shadow-xl lg:bottom-40 lg:left-5">
+            <div className="animate-float-slow absolute bottom-40 left-5 z-10 rounded-lg bg-white p-4 shadow-xl">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#0a1a2e]">
                   <Clock className="h-5 w-5 text-[#f5a623]" />
@@ -108,7 +169,7 @@ export function Hero() {
             </div>
 
             {/* Dedicated Support Card */}
-            <div className="animate-float absolute bottom-10 right-0 z-10 rounded-lg bg-white p-4 shadow-xl lg:bottom-45 lg:right-30">
+            <div className="animate-float absolute bottom-45 right-30 z-10 rounded-lg bg-white p-4 shadow-xl">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#f5a623]">
                   <Headphones className="h-5 w-5 text-[#0a1a2e]" />
@@ -119,8 +180,6 @@ export function Hero() {
                 </div>
               </div>
             </div>
-
-           
           </div>
         </div>
       </div>
