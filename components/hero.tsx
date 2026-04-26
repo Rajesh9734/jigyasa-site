@@ -52,16 +52,14 @@ export function Hero() {
             help you grow your wealth and achieve financial freedom.
           </p>
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
-            <Button className="bg-[#f5a623] px-6 py-6 text-[#0a1a2e] hover:bg-[#d4900f]">
+            <Button className="rounded-full bg-gold px-8 py-6 text-base font-semibold text-navy shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-gold-dark hover:shadow-lg">
               Explore Courses
-              <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
             <Button
               variant="outline"
-              className="border-white bg-transparent px-6 py-6 text-white hover:bg-white/10"
+              className="rounded-full border-2 border-white bg-transparent px-8 py-6 text-base font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-navy hover:shadow-lg"
             >
               Free Consultation
-              <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
         </div>
@@ -71,7 +69,7 @@ export function Hero() {
           {/* Floating Stats Cards */}
           <div className="relative h-[400px] w-full lg:h-[500px]">
             {/* 500+ Students Card */}
-            <div className="animate-float absolute left-0 top-0 z-10 rounded-lg bg-white p-4 shadow-xl lg:left-10 lg:top-10">
+            <div className="animate-float absolute left-0 top-0 z-10 rounded-lg bg-white p-4 shadow-xl lg:left-10 lg:top-25">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#0a1a2e]">
                   <Users className="h-5 w-5 text-[#f5a623]" />
@@ -84,7 +82,7 @@ export function Hero() {
             </div>
 
             {/* 90%+ Success Rate Card */}
-            <div className="animate-float-delayed absolute right-0 top-5 z-10 rounded-lg bg-white p-4 shadow-xl lg:right-20 lg:top-0">
+            <div className="animate-float-delayed absolute right-0 top-5 z-10 rounded-lg bg-white p-4 shadow-xl lg:right-30 lg:top-20">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#f5a623]">
                   <Award className="h-5 w-5 text-[#0a1a2e]" />
@@ -110,7 +108,7 @@ export function Hero() {
             </div>
 
             {/* Dedicated Support Card */}
-            <div className="animate-float absolute bottom-10 right-0 z-10 rounded-lg bg-white p-4 shadow-xl lg:bottom-48 lg:right-20">
+            <div className="animate-float absolute bottom-10 right-0 z-10 rounded-lg bg-white p-4 shadow-xl lg:bottom-45 lg:right-30">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#f5a623]">
                   <Headphones className="h-5 w-5 text-[#0a1a2e]" />

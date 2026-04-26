@@ -72,8 +72,7 @@ export function Header() {
         </nav>
 
         {/* CTA Button */}
-        <Button className="hidden bg-[#0a1a2e] text-white hover:bg-[#1a2a3e] lg:flex">
-          <User className="mr-2 h-4 w-4" />
+        <Button className="hidden bg-[#f5a623] px-6 text-sm font-semibold text-[#0a1a2e] border border-[#f5a623]/30 shadow-sm transition-all duration-300 hover:scale-105 hover:bg-[#f5a623] hover:text-[#0a1a2e] lg:flex rounded-full">
           Join Class
         </Button>
       </div>

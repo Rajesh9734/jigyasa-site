@@ -29,17 +29,15 @@ export function CTASection() {
           </div>
 
           {/* Right - Buttons */}
-          <div className="flex flex-col gap-4 sm:flex-row -ml-2">
-            <Button className="bg-[#f5a623] px-8 py-6 text-[#0a1a2e] hover:bg-[#d4900f]">
+          <div className="flex flex-col gap-4 sm:flex-row -ml-2 lg:ml-0">
+            <Button className="rounded-full bg-[#FFB800] px-10 py-6 text-base font-semibold text-[#0a1a2e] shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E5A600] hover:shadow-lg">
               Join a Class Now
-              <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
             <Button
               variant="outline"
-              className="border-white bg-transparent px-8 py-6 text-white hover:bg-white/10"
+              className="rounded-full border-2 border-white bg-transparent px-10 py-6 text-base font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-[#0a1a2e] hover:shadow-lg"
             >
               Contact Us
-              <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
         </div>

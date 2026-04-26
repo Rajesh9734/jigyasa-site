@@ -10,19 +10,19 @@
   --card-foreground: oklch(0.15 0.02 250);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.15 0.02 250);
-  --primary: oklch(0.75 0.15 75);
+  --primary: oklch(0.79 0.17 85);
   --primary-foreground: oklch(0.15 0.02 250);
   --secondary: oklch(0.18 0.04 250);
   --secondary-foreground: oklch(0.98 0 0);
   --muted: oklch(0.96 0 0);
   --muted-foreground: oklch(0.5 0 0);
-  --accent: oklch(0.75 0.15 75);
+  --accent: oklch(0.79 0.17 85);
   --accent-foreground: oklch(0.15 0.02 250);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.577 0.245 27.325);
   --border: oklch(0.9 0 0);
   --input: oklch(0.9 0 0);
-  --ring: oklch(0.75 0.15 75);
+  --ring: oklch(0.79 0.17 85);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -30,11 +30,12 @@
   --chart-5: oklch(0.769 0.188 70.08);
   --radius: 0.5rem;
 
-  /* Custom Jigyasa colors */
+/* Custom Jigyasa colors */
   --navy: oklch(0.18 0.04 250);
   --navy-dark: oklch(0.12 0.03 250);
-  --gold: oklch(0.75 0.15 75);
-  --gold-light: oklch(0.82 0.12 80);
+  --gold: #FFB800;             /* New Vibrant Gold */
+  --gold-light: oklch(0.85 0.15 85); /* Keeping your light version */
+  --gold-dark: #E5A600;        /* ADDED: Darker version for hover states */
 }
 
 @theme inline {
@@ -72,6 +73,7 @@
   --color-navy-dark: var(--navy-dark);
   --color-gold: var(--gold);
   --color-gold-light: var(--gold-light);
+  --color-gold-dark: var(--gold-dark); /* ADDED THIS LINE */
 }
 
 @layer base {
