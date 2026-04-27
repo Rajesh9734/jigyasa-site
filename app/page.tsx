@@ -6,6 +6,7 @@ import { MapSection } from "@/components/map-section"
 import { StatsBar } from "@/components/stats-bar"
 import { CTASection } from "@/components/cta-section"
 import { Footer } from "@/components/footer"
+import { WhatsAppFloat } from "@/components/whatsapp-float"
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
       <StatsBar />
       <CTASection />
       <Footer />
+      <WhatsAppFloat />
     </main>
   )
 }

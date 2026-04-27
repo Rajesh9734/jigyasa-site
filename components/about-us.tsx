@@ -18,7 +18,7 @@ const features = [
 
 export function AboutUs() {
   return (
-    <section id="about" className="bg-white py-16 lg:py-24">
+    <section id="about" className="bg-white py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <div className="flex flex-col items-center gap-12 lg:flex-row lg:gap-16">
           {/* Left - Image */}
@@ -50,13 +50,13 @@ export function AboutUs() {
           {/* Right - Content */}
           <div className="flex-1">
             <div className="mb-4 flex items-center gap-3">
-              <span className="text-sm font-semibold uppercase tracking-wider text-[#f5a623]">
+              <span className="text-sm font-semibold uppercase tracking-wider text-[#2563eb]">
                 About Us
               </span>
-              <div className="h-px w-12 bg-[#f5a623]" />
-              <div className="h-2 w-2 rounded-full bg-[#f5a623]" />
+              <div className="h-px w-12 bg-[#2563eb]" />
+              <div className="h-2 w-2 rounded-full bg-[#2563eb]" />
             </div>
-            <h2 className="mb-6 text-3xl font-bold text-[#0a1a2e] lg:text-4xl">
+            <h2 className="mb-6 text-3xl font-bold tracking-tight text-navy lg:text-4xl">
               Who We Are
             </h2>
             <p className="mb-8 text-gray-600 leading-relaxed">
@@ -69,8 +69,8 @@ export function AboutUs() {
             <div className="flex flex-wrap gap-8">
               {features.map((feature) => (
                 <div key={feature.title} className="flex items-center gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#fff8eb]">
-                    <feature.icon className="h-6 w-6 text-[#f5a623]" />
+                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#e8f0fe]">
+                    <feature.icon className="h-6 w-6 text-[#2563eb]" strokeWidth={1.5} />
                   </div>
                   <span className="text-sm font-medium text-[#0a1a2e]">
                     {feature.title}

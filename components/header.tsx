@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { usePathname } from "next/navigation"
 import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -32,13 +33,24 @@ const sectionIdToActiveHref: Record<string, string> = {
 }
 
 export function Header() {
+  const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
+  const [isOverHero, setIsOverHero] = useState(pathname === "/")
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState("")
   const [clickedHref, setClickedHref] = useState<string | null>(null)
 
   const handleScroll = useCallback(() => {
     setScrolled(window.scrollY > 50)
+
+    let isCurrentlyOverHero = false
+    const heroSection = document.getElementById("hero")
+    if (pathname === "/" && heroSection) {
+      const heroBottom = heroSection.offsetTop + heroSection.offsetHeight
+      const headerHeight = 72
+      isCurrentlyOverHero = window.scrollY + headerHeight < heroBottom
+    }
+    setIsOverHero(isCurrentlyOverHero)
 
     // Determine active section based on scroll position
     const scrollPosition = window.scrollY + 120 // offset for header height
@@ -68,13 +80,13 @@ export function Header() {
     }
 
     if (!found) {
-      if (window.scrollY < 100) {
+      if (isCurrentlyOverHero || window.scrollY < 100) {
         setActiveSection("#")
       } else {
         setActiveSection("")
       }
     }
-  }, [clickedHref])
+  }, [clickedHref, pathname])
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll)
@@ -132,12 +144,20 @@ export function Header() {
     setMobileMenuOpen(false)
   }
 
+  const resolveNavHref = (href: string) => {
+    if (pathname === "/") return href
+    if (href === "#") return "/"
+    return `/${href}`
+  }
+
   return (
     <header
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-        scrolled
-          ? "bg-white/75 shadow-md backdrop-blur-md"
-          : "bg-white shadow-sm"
+      className={`fixed top-0 z-50 w-full border-b transition-all duration-300 ${
+        isOverHero
+          ? "border-white/0 bg-white/[0.06] shadow-md backdrop-blur-md"
+          : scrolled
+            ? "border-slate-200 bg-white/85 shadow-md backdrop-blur-md"
+            : "border-slate-100 bg-white shadow-sm"
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 md:h-16 lg:px-8">
@@ -145,7 +165,7 @@ export function Header() {
         <Link href="/" className="flex items-center gap-2">
           <div className="flex items-center">
             <Image
-              src="/images/logo-transparent.png"
+              src={isOverHero ? "/images/jigyasa_logo_white.png" : "/images/logo-transparent.png"}
               alt="Jigyasa Capital Logo"
               width={50}
               height={50}
@@ -155,7 +175,11 @@ export function Header() {
               <span className="text-xl font-bold leading-tight text-[#f5a623]">
                 JIGYASA
               </span>
-              <span className="text-[10px] font-semibold tracking-wider text-[#2563eb]">
+              <span
+                className={`block text-center text-[12px] font-semibold tracking-wider ${
+                  isOverHero ? "text-white/85" : "text-[#2563eb]"
+                }`}
+              >
                 CAPITAL
               </span>
             </div>
@@ -163,14 +187,22 @@ export function Header() {
         </Link>
 
         {/* Desktop / Tablet Navigation (visible at md: 768px+) */}
-        <nav className="hidden flex-1 items-center justify-center gap-4 text-xs md:flex md:gap-6 lg:gap-20 lg:text-sm">
+        <nav className="hidden flex-1 items-center justify-start ml-6 gap-4 text-xs md:flex md:ml-8 md:gap-6 lg:ml-25 lg:gap-12 lg:text-sm">
           {navItems.map((item) => (
             <Link
               key={item.label}
-              href={item.href}
+              href={resolveNavHref(item.href)}
               onClick={() => handleNavClick(item.href)}
-              className={`font-medium transition-colors hover:text-[#2563eb] ${
-                activeSection === item.href ? "text-[#2563eb]" : "text-[#0a1a2e]"
+              className={`font-medium transition-colors ${
+                isOverHero
+                  ? "text-white/85 hover:text-[#ffd166]"
+                  : "text-[#0a1a2e] hover:text-[#2439A9]"
+              } ${
+                activeSection === item.href
+                  ? isOverHero
+                    ? "text-[#ffd166]"
+                    : "text-[#2439A9]"
+                  : ""
               }`}
             >
               {item.label}
@@ -179,14 +211,25 @@ export function Header() {
         </nav>
 
         {/* Desktop CTA Button (visible at md: 768px+) */}
-        <Button className="hidden bg-[#f5a623] px-4 text-xs font-semibold text-[#0a1a2e] border border-[#f5a623]/30 shadow-sm transition-all duration-300 hover:scale-105 hover:bg-[#f5a623] hover:text-[#0a1a2e] md:flex md:rounded-full lg:px-6 lg:text-sm">
-          Join Class
+        <Button
+          asChild
+          className={`hidden px-4 text-xs font-semibold  transition-all duration-300 md:flex md:rounded-md lg:px-6 lg:text-sm ${
+            isOverHero
+              ? "bg-[#ffffff] text-[#1a1a1a] shadow-sm hover:scale-105 hover:bg-[#ffffff] hover:text-[#0a1a2e]"
+              : "bg-[#2439A9] text-white hover:bg-[#2439A9] hover:text-white border-0 shadow-sm hover:scale-105"
+          }`}
+        >
+          <Link href="/contact">Join Class</Link>
         </Button>
 
         {/* Mobile Hamburger Button (visible below md: 768px) */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="relative z-50 flex h-10 w-10 items-center justify-center rounded-lg text-[#0a1a2e] transition-colors hover:bg-gray-100 md:hidden"
+          className={`relative z-50 flex h-10 w-10 items-center justify-center rounded-lg transition-colors md:hidden ${
+            isOverHero
+              ? "text-white hover:bg-white/10"
+              : "text-[#0a1a2e] hover:bg-gray-100"
+          }`}
           aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
         >
           <div className="relative h-5 w-5">
@@ -224,12 +267,12 @@ export function Header() {
             {navItems.map((item, index) => (
               <Link
                 key={item.label}
-                href={item.href}
+                href={resolveNavHref(item.href)}
                 onClick={() => handleNavClick(item.href)}
                 className={`rounded-lg px-4 py-3 text-base font-medium transition-all duration-200 ${
                   activeSection === item.href
-                    ? "bg-[#e8f0fe] text-[#2563eb]"
-                    : "text-[#0a1a2e] hover:bg-gray-50 hover:text-[#2563eb]"
+                    ? "bg-amber-50 text-[#c98700]"
+                    : "text-[#0a1a2e] hover:bg-gray-50 hover:text-[#c98700]"
                 }`}
                 style={{
                   animationDelay: `${index * 50}ms`,
@@ -244,8 +287,17 @@ export function Header() {
           <div className="my-6 h-px bg-gray-200" />
 
           {/* Mobile CTA Button */}
-          <Button className="w-full rounded-full bg-[#f5a623] px-6 py-3 text-sm font-semibold text-[#0a1a2e] border border-[#f5a623]/30 shadow-sm transition-all duration-300 hover:bg-[#e5a600]">
-            Join Class
+          <Button
+            asChild
+            className={`w-full rounded-full px-6 py-3 text-sm font-semibold border shadow-sm transition-all duration-300 ${
+              isOverHero
+                ? "bg-[#f5a623] text-[#0a1a2e] border-[#f5a623]/30 hover:bg-[#e5a600]"
+                : "bg-[#0ea5ff] text-white border-transparent hover:bg-[#0ea5ff]"
+            }`}
+          >
+            <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>
+              Join Class
+            </Link>
           </Button>
         </div>
       </div>

@@ -1,33 +1,20 @@
 import type { Metadata } from 'next'
-import { Poppins } from 'next/font/google'
+import { Geist } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
-const poppins = Poppins({ 
+const geist = Geist({
   subsets: ["latin"],
-  weight: ['300', '400', '500', '600', '700', '800'],
-  variable: '--font-poppins'
+  variable: '--font-geist'
 });
 
 export const metadata: Metadata = {
   title: 'Jigyasa Capital - Empowering Financial Success',
   description: 'NEPSE & FX training, capital investment and advisory services to help you grow your wealth and achieve financial freedom.',
   icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
+    icon: '/images/logo-transparent.png',
+    shortcut: '/images/logo-transparent.png',
+    apple: '/images/logo-transparent.png',
   },
 }
 
@@ -38,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="bg-background">
-      <body className={`${poppins.variable} font-sans antialiased`}>
+      <body className={`${geist.variable} font-sans antialiased`}>
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>

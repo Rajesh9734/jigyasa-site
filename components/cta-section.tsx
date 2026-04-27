@@ -1,17 +1,18 @@
-import { ArrowRight, TrendingUp } from "lucide-react"
+import { TrendingUp } from "lucide-react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
 export function CTASection() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-r from-[#0a1a2e] via-[#1a3a5c] to-[#0a1a2e] py-20 lg:py-28">
+    <section className="relative overflow-hidden bg-gradient-to-r from-[#122B78] via-[#0F1F60] to-[#0A173F] py-20 lg:py-28">
       {/* Decorative background elements */}
       <div className="absolute right-0 top-0 h-full w-1/3 opacity-20">
         <div className="flex h-full items-end justify-end gap-2 pr-8 pb-8">
-          <div className="h-24 w-4 rounded-t bg-blue-400" />
-          <div className="h-32 w-4 rounded-t bg-blue-500" />
-          <div className="h-40 w-4 rounded-t bg-blue-400" />
-          <div className="h-28 w-4 rounded-t bg-blue-500" />
-          <div className="h-36 w-4 rounded-t bg-blue-400" />
+          <div className="h-24 w-4 rounded-t bg-[#f5a623]/70" />
+          <div className="h-32 w-4 rounded-t bg-white/40" />
+          <div className="h-40 w-4 rounded-t bg-[#f5a623]/70" />
+          <div className="h-28 w-4 rounded-t bg-white/40" />
+          <div className="h-36 w-4 rounded-t bg-[#f5a623]/70" />
         </div>
       </div>
 
@@ -30,14 +31,15 @@ export function CTASection() {
 
           {/* Right - Buttons */}
           <div className="flex flex-col gap-4 sm:flex-row -ml-2 lg:ml-0">
-            <Button className="rounded-full bg-[#FFB800] px-10 py-6 text-base font-semibold text-[#0a1a2e] shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E5A600] hover:shadow-lg">
-              Join a Class Now
+            <Button asChild className="rounded-full bg-[#FFB800] px-10 py-6 text-base font-semibold text-[#0a1a2e] shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E5A600] hover:shadow-lg">
+              <Link href="/contact">Join a Class Now</Link>
             </Button>
             <Button
+              asChild
               variant="outline"
               className="rounded-full border-2 border-white bg-transparent px-10 py-6 text-base font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-[#0a1a2e] hover:shadow-lg"
             >
-              Contact Us
+              <Link href="/contact">Contact Us</Link>
             </Button>
           </div>
         </div>

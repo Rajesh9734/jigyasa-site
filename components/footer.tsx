@@ -3,12 +3,12 @@ import Image from "next/image"
 import { Facebook, Instagram, Youtube, Linkedin, Phone, Mail, MapPin } from "lucide-react"
 
 const quickLinks = [
-  { label: "Home", href: "#" },
-  { label: "About Us", href: "#about" },
-  { label: "Courses", href: "#courses" },
-  { label: "Services", href: "#services" },
-  { label: "Blog", href: "#blog" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "/" },
+  { label: "About Us", href: "/#about" },
+  { label: "Courses", href: "/#courses" },
+  { label: "Services", href: "/#services" },
+  { label: "Blog", href: "/#blog" },
+  { label: "Contact", href: "/#contact" },
 ]
 
 const servicesLinks = [
@@ -27,7 +27,7 @@ const socialLinks = [
 
 export function Footer() {
   return (
-    <footer className="bg-[#0a1a2e] pt-16 pb-8 text-white">
+    <footer className="border-t border-white/10 bg-[#08143A] pt-16 pb-8 text-white">
       <div className="mx-auto max-w-7xl px-6 lg:px-12">
         <div className="mb-12 grid gap-12 lg:grid-cols-4">
           {/* Logo & Description */}
@@ -42,15 +42,13 @@ export function Footer() {
                   className="h-12 w-12 object-contain"
                 />
                 <div className="ml-2 flex flex-col">
-                  <span className="text-lg font-bold leading-tight text-[#f5a623]">
+                  <span className="text-xl font-bold leading-tight text-gold">
                     JIGYASA
                   </span>
-                  <span className="text-[9px] font-semibold tracking-wider text-[#60a5fa]">
+                  <span className="block text-center text-xs font-semibold tracking-wider text-[#60a5fa]">
                     CAPITAL
                   </span>
-                  <span className="text-[7px] text-gray-400">
-                    Empowering Financial Success
-                  </span>
+                  
                 </div>
               </div>
             </Link>
@@ -60,7 +58,7 @@ export function Footer() {
                 <Link
                   key={social.label}
                   href={social.href}
-                  className="flex h-8 w-8 items-center justify-center rounded-full bg-[#1a3a5c] text-gray-400 transition-colors hover:bg-[#f5a623] hover:text-[#0a1a2e]"
+                  className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-slate-300 transition-colors hover:bg-[#f5a623] hover:text-[#0a1a2e]"
                   aria-label={social.label}
                 >
                   <social.icon className="h-4 w-4" />
@@ -77,7 +75,7 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm text-gray-400 transition-colors hover:text-[#f5a623]"
+                    className="text-sm text-slate-300 transition-colors hover:text-[#f5a623]"
                   >
                     {link.label}
                   </Link>
@@ -94,7 +92,7 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm text-gray-400 transition-colors hover:text-[#f5a623]"
+                    className="text-sm text-slate-300 transition-colors hover:text-[#f5a623]"
                   >
                     {link.label}
                   </Link>
@@ -109,25 +107,25 @@ export function Footer() {
             <ul className="space-y-4">
               <li className="flex items-center gap-3">
                 <Phone className="h-4 w-4 text-[#f5a623]" />
-                <span className="text-sm text-gray-400">+977 9800000000</span>
+                <span className="text-sm text-slate-300">+977 9800000000</span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="h-4 w-4 text-[#f5a623]" />
-                <span className="text-sm text-gray-400">
+                <span className="text-sm text-slate-300">
                   info@jigyasacapital.com
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <MapPin className="h-4 w-4 text-[#f5a623]" />
-                <span className="text-sm text-gray-400">Kathmandu, Nepal</span>
+                <span className="text-sm text-slate-300">Kathmandu, Nepal</span>
               </li>
             </ul>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-800 pt-8">
-          <div className="flex flex-col items-center justify-between gap-4 text-sm text-gray-500 lg:flex-row">
+        <div className="border-t border-white/10 pt-8">
+          <div className="flex flex-col items-center justify-between gap-4 text-sm text-slate-400 lg:flex-row">
             <p>&copy; 2026 Jigyasa Capital Pvt. Ltd. All Rights Reserved.</p>
             <div className="flex gap-6">
               <Link href="#" className="transition-colors hover:text-[#f5a623]">
