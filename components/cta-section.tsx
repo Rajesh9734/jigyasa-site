@@ -31,7 +31,7 @@ export function CTASection() {
 
           {/* Right - Buttons */}
           <div className="flex flex-col gap-4 sm:flex-row -ml-2 lg:ml-0">
-            <Button asChild className="rounded-full bg-[#FFB800] px-10 py-6 text-base font-semibold text-[#0a1a2e] shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E5A600] hover:shadow-lg">
+            <Button asChild className="rounded-full bg-[#f5a623] px-10 py-6 text-base font-semibold text-[#0a1a2e] shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#e09610] hover:shadow-lg">
               <Link href="/contact">Join a Class Now</Link>
             </Button>
             <Button

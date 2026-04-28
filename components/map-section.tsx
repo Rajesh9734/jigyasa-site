@@ -56,7 +56,7 @@ export function MapSection() {
           <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
             <iframe
               title="Jigyasa Capital location"
-              src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d883.2742299966611!2d85.3432856695698!3d27.6833991985123!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjfCsDQxJzAwLjIiTiA4NcKwMjAnMzguMiJF!5e0!3m2!1sen!2snp!4v1777047359189!5m2!1sen!2snp"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3533.103051322673!2d85.34140277507979!3d27.68320967619641!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb192cd37f3db5%3A0x5299f050595aa37!2sJigyasa%20Capital%20Pvt.%20Ltd.!5e0!3m2!1sen!2snp!4v1777352130849!5m2!1sen!2snp"
               className="h-[360px] w-full border-0 md:h-[420px] lg:h-full lg:min-h-[520px]"
               allowFullScreen
               loading="lazy"
