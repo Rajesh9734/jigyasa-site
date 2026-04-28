@@ -46,7 +46,7 @@ export function MapSection() {
 
               <Button
                 type="button"
-                className="w-full rounded-full bg-[#f5a623] py-5 text-base font-semibold text-[#0F1B5C] transition-colors hover:bg-[#e09610]"
+                className="w-full rounded-md bg-[#2439A9] py-5 text-base font-semibold text-white shadow-sm transition-colors hover:bg-[#2439A9] hover:text-white"
               >
                 Send Message
               </Button>

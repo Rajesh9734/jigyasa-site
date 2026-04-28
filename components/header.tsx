@@ -151,8 +151,11 @@ export function Header() {
   }
 
   return (
+    <>
     <header
-      className={`fixed top-0 z-50 w-full border-b transition-all duration-300 ${
+      className={`fixed top-0 w-full border-b transition-all duration-300 ${
+        mobileMenuOpen ? "z-[70]" : "z-50"
+      } ${
         isOverHero
           ? "border-white/0 bg-white/[0.06] shadow-md backdrop-blur-md"
           : scrolled
@@ -224,13 +227,18 @@ export function Header() {
 
         {/* Mobile Hamburger Button (visible below md: 768px) */}
         <button
+          type="button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className={`relative z-50 flex h-10 w-10 items-center justify-center rounded-lg transition-colors md:hidden ${
-            isOverHero
-              ? "text-white hover:bg-white/10"
-              : "text-[#0a1a2e] hover:bg-gray-100"
+            mobileMenuOpen
+              ? "text-[#0a1a2e] hover:bg-gray-100"
+              : isOverHero
+                ? "text-white hover:bg-white/10"
+                : "text-[#0a1a2e] hover:bg-gray-100"
           }`}
           aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+          aria-controls="mobile-menu"
+          aria-expanded={mobileMenuOpen}
         >
           <div className="relative h-5 w-5">
             <Menu
@@ -246,20 +254,24 @@ export function Header() {
           </div>
         </button>
       </div>
+    </header>
 
       {/* Mobile Menu Overlay (only below md) */}
       <div
-        className={`fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity duration-300 md:hidden ${
+        className={`fixed inset-0 z-[55] bg-black/50 backdrop-blur-sm transition-opacity duration-300 md:hidden ${
           mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         onClick={() => setMobileMenuOpen(false)}
+        aria-hidden="true"
       />
 
       {/* Mobile Menu Panel (only below md) */}
       <div
-        className={`fixed right-0 top-0 z-40 h-full w-72 bg-white shadow-2xl transition-transform duration-300 ease-in-out md:hidden ${
+        id="mobile-menu"
+        className={`fixed right-0 top-0 z-[60] h-dvh w-72 max-w-[85vw] bg-white shadow-2xl transition-transform duration-300 ease-in-out md:hidden ${
           mobileMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
+        aria-hidden={!mobileMenuOpen}
       >
         <div className="flex flex-col pt-20 px-6">
           {/* Nav Items */}
@@ -271,8 +283,8 @@ export function Header() {
                 onClick={() => handleNavClick(item.href)}
                 className={`rounded-lg px-4 py-3 text-base font-medium transition-all duration-200 ${
                   activeSection === item.href
-                    ? "bg-amber-50 text-[#c98700]"
-                    : "text-[#0a1a2e] hover:bg-gray-50 hover:text-[#c98700]"
+                    ? "bg-blue-50 text-[#2439A9]"
+                    : "text-[#0a1a2e] hover:bg-gray-50 hover:text-[#2439A9]"
                 }`}
                 style={{
                   animationDelay: `${index * 50}ms`,
@@ -289,11 +301,7 @@ export function Header() {
           {/* Mobile CTA Button */}
           <Button
             asChild
-            className={`w-full rounded-full px-6 py-3 text-sm font-semibold border shadow-sm transition-all duration-300 ${
-              isOverHero
-                ? "bg-[#f5a623] text-[#0a1a2e] border-[#f5a623]/30 hover:bg-[#e5a600]"
-                : "bg-[#0ea5ff] text-white border-transparent hover:bg-[#0ea5ff]"
-            }`}
+            className="w-full rounded-full border border-transparent bg-[#2439A9] px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:bg-[#2439A9] hover:text-white"
           >
             <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>
               Join Class
@@ -301,6 +309,6 @@ export function Header() {
           </Button>
         </div>
       </div>
-    </header>
+    </>
   )
 }
