@@ -48,17 +48,32 @@ const PRICE_RANGE = MAX_PRICE - MIN_PRICE
 
 export function CandlestickChart() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-  const [isMobile, setIsMobile] = useState(() => {
-    if (typeof window === "undefined") return false
-    return window.innerWidth < 768
-  })
+  const [isMobile, setIsMobile] = useState(false)
+  const [isHydrated, setIsHydrated] = useState(false)
 
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 767px)")
+    if (typeof window === "undefined") return
+    const mq = window.matchMedia?.("(max-width: 767px)")
+    if (!mq) {
+      setIsMobile(window.innerWidth < 768)
+      setIsHydrated(true)
+      return
+    }
     setIsMobile(mq.matches)
     const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
-    mq.addEventListener("change", handler)
-    return () => mq.removeEventListener("change", handler)
+    if (mq.addEventListener) {
+      mq.addEventListener("change", handler)
+    } else {
+      mq.addListener(handler)
+    }
+    setIsHydrated(true)
+    return () => {
+      if (mq.removeEventListener) {
+        mq.removeEventListener("change", handler)
+      } else {
+        mq.removeListener(handler)
+      }
+    }
   }, [])
 
   const priceToY = useCallback((price: number) => {
@@ -110,50 +125,60 @@ export function CandlestickChart() {
 
           return (
             <g key={i}>
-              <rect
-                x={x - candleSpacing / 2}
-                y={PADDING.top}
-                width={candleSpacing}
-                height={CHART_HEIGHT}
-                fill="transparent"
-                onMouseEnter={() => setHoveredIndex(i)}
-                onMouseLeave={() => setHoveredIndex(null)}
-                className="hidden md:block"
-              />
-
-              {isMobile ? (
-                <motion.g
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: i * 0.055, duration: 0.45, ease: "easeOut" }}
-                  className="pointer-events-none"
-                >
+              {!isHydrated ? (
+                <g className="pointer-events-none">
                   <line x1={x} y1={wickTop} x2={x} y2={bodyTop} stroke={color} strokeWidth={1.5} strokeLinecap="round" />
                   <line x1={x} y1={bodyBottom} x2={x} y2={wickBottom} stroke={color} strokeWidth={1.5} strokeLinecap="round" />
                   <rect x={x - candleWidth / 2} y={bodyTop} width={candleWidth} height={bodyHeight} fill={color} rx={1.5} opacity={1} />
-                </motion.g>
+                </g>
               ) : (
-                <motion.g
-                  initial={{ opacity: 0, scaleY: 0 }}
-                  animate={{
-                    opacity: 1,
-                    scaleY: 1,
-                    scale: isHovered ? 1.18 : 1,
-                    y: isHovered ? -4 : 0,
-                  }}
-                  transition={{
-                    opacity: { delay: i * 0.055, duration: 0.45, ease: "easeOut" },
-                    scaleY: { delay: i * 0.055, duration: 0.5, ease: [0.34, 1.56, 0.64, 1] },
-                    scale: { duration: 0.2, ease: "easeOut" },
-                    y: { duration: 0.2, ease: "easeOut" },
-                  }}
-                  style={{ transformOrigin: `${x}px ${wickBottom}px` }}
-                  className="pointer-events-none"
-                >
-                  <line x1={x} y1={wickTop} x2={x} y2={bodyTop} stroke={color} strokeWidth={isHovered ? 2 : 1.5} strokeLinecap="round" />
-                  <line x1={x} y1={bodyBottom} x2={x} y2={wickBottom} stroke={color} strokeWidth={isHovered ? 2 : 1.5} strokeLinecap="round" />
-                  <rect x={x - candleWidth / 2} y={bodyTop} width={candleWidth} height={bodyHeight} fill={color} rx={1.5} opacity={1} />
-                </motion.g>
+                <>
+                  <rect
+                    x={x - candleSpacing / 2}
+                    y={PADDING.top}
+                    width={candleSpacing}
+                    height={CHART_HEIGHT}
+                    fill="transparent"
+                    onMouseEnter={() => setHoveredIndex(i)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                    className="hidden md:block"
+                  />
+
+                  {isMobile ? (
+                    <motion.g
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: i * 0.055, duration: 0.45, ease: "easeOut" }}
+                      className="pointer-events-none"
+                    >
+                      <line x1={x} y1={wickTop} x2={x} y2={bodyTop} stroke={color} strokeWidth={1.5} strokeLinecap="round" />
+                      <line x1={x} y1={bodyBottom} x2={x} y2={wickBottom} stroke={color} strokeWidth={1.5} strokeLinecap="round" />
+                      <rect x={x - candleWidth / 2} y={bodyTop} width={candleWidth} height={bodyHeight} fill={color} rx={1.5} opacity={1} />
+                    </motion.g>
+                  ) : (
+                    <motion.g
+                      initial={{ opacity: 0, scaleY: 0 }}
+                      animate={{
+                        opacity: 1,
+                        scaleY: 1,
+                        scale: isHovered ? 1.18 : 1,
+                        y: isHovered ? -4 : 0,
+                      }}
+                      transition={{
+                        opacity: { delay: i * 0.055, duration: 0.45, ease: "easeOut" },
+                        scaleY: { delay: i * 0.055, duration: 0.5, ease: [0.34, 1.56, 0.64, 1] },
+                        scale: { duration: 0.2, ease: "easeOut" },
+                        y: { duration: 0.2, ease: "easeOut" },
+                      }}
+                      style={{ transformOrigin: `${x}px ${wickBottom}px` }}
+                      className="pointer-events-none"
+                    >
+                      <line x1={x} y1={wickTop} x2={x} y2={bodyTop} stroke={color} strokeWidth={isHovered ? 2 : 1.5} strokeLinecap="round" />
+                      <line x1={x} y1={bodyBottom} x2={x} y2={wickBottom} stroke={color} strokeWidth={isHovered ? 2 : 1.5} strokeLinecap="round" />
+                      <rect x={x - candleWidth / 2} y={bodyTop} width={candleWidth} height={bodyHeight} fill={color} rx={1.5} opacity={1} />
+                    </motion.g>
+                  )}
+                </>
               )}
             </g>
           )
