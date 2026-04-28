@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Geist } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { logo, siteConfig } from '@/config/site'
 import './globals.css'
 
 const geist = Geist({
@@ -9,12 +10,42 @@ const geist = Geist({
 });
 
 export const metadata: Metadata = {
-  title: 'Jigyasa Capital - Empowering Financial Success',
-  description: 'NEPSE & FX training, capital investment and advisory services to help you grow your wealth and achieve financial freedom.',
+  metadataBase: new URL(siteConfig.url),
+  title: {
+    default: `${siteConfig.name} - Empowering Financial Success`,
+    template: `%s | ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
+  applicationName: siteConfig.name,
+  alternates: {
+    canonical: '/',
+  },
   icons: {
-    icon: '/images/logo-transparent.png',
-    shortcut: '/images/logo-transparent.png',
-    apple: '/images/logo-transparent.png',
+    icon: logo.default,
+    shortcut: logo.default,
+    apple: logo.default,
+  },
+  openGraph: {
+    title: `${siteConfig.name} - Empowering Financial Success`,
+    description: siteConfig.description,
+    url: '/',
+    siteName: siteConfig.name,
+    locale: siteConfig.locale,
+    type: 'website',
+    images: [
+      {
+        url: logo.default,
+        width: 512,
+        height: 512,
+        alt: `${siteConfig.name} logo`,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary',
+    title: `${siteConfig.name} - Empowering Financial Success`,
+    description: siteConfig.description,
+    images: [logo.default],
   },
 }
 
