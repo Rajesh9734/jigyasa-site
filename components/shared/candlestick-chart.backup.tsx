@@ -12,21 +12,20 @@ interface OHLCData {
 }
 
 const OHLC_DATA: OHLCData[] = [
-  
-  { date: "2024-01-01", open: 100, high: 101.5, low: 98, close: 101 },
+  { date: "2024-01-01", open: 100, high: 102, low: 98, close: 101 },
   { date: "2024-01-02", open: 101, high: 104, low: 100, close: 103 },
-  { date: "2024-01-03", open: 102, high: 105, low: 101, close: 104 },
-  { date: "2024-01-04", open: 105, high: 106, low: 100, close: 101 },
+  { date: "2024-01-03", open: 103, high: 105, low: 101, close: 104 },
+  { date: "2024-01-04", open: 104, high: 106, low: 102, close: 103 },
   { date: "2024-01-05", open: 103, high: 107, low: 102, close: 106 },
   { date: "2024-01-06", open: 106, high: 108, low: 104, close: 107 },
   { date: "2024-01-07", open: 107, high: 110, low: 105, close: 109 },
   { date: "2024-01-08", open: 109, high: 111, low: 107, close: 110 },
-  { date: "2024-01-09", open: 110, high: 111, low: 106, close: 108 },
+  { date: "2024-01-09", open: 110, high: 111, low: 106, close: 107 },
   { date: "2024-01-10", open: 107, high: 109, low: 104, close: 105 },
-  { date: "2024-01-11", open: 105, high: 105.5, low: 102, close: 103 },
+  { date: "2024-01-11", open: 105, high: 107, low: 102, close: 103 },
   { date: "2024-01-12", open: 103, high: 106, low: 101, close: 104 },
   { date: "2024-01-13", open: 104, high: 108, low: 103, close: 107 },
-  { date: "2024-01-14", open: 107, high: 109, low: 103.5, close: 104 },
+  { date: "2024-01-14", open: 107, high: 109, low: 105, close: 106 },
   { date: "2024-01-15", open: 106, high: 108, low: 104, close: 105 },
   { date: "2024-01-16", open: 105, high: 109, low: 104, close: 108 },
   { date: "2024-01-17", open: 108, high: 112, low: 107, close: 111 },
@@ -39,7 +38,7 @@ const OHLC_DATA: OHLCData[] = [
 
 const SVG_WIDTH = 520
 const SVG_HEIGHT = 300
-const PADDING = { top: 24, right: 12, bottom: 20, left: 1 }
+const PADDING = { top: 24, right: 12, bottom: 20, left: 12 }
 const CHART_WIDTH = SVG_WIDTH - PADDING.left - PADDING.right
 const CHART_HEIGHT = SVG_HEIGHT - PADDING.top - PADDING.bottom
 
@@ -47,7 +46,7 @@ const MIN_PRICE = 96
 const MAX_PRICE = 120
 const PRICE_RANGE = MAX_PRICE - MIN_PRICE
 
-export function CandlestickChart() {
+export function CandlestickChartBackup() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [isMobile, setIsMobile] = useState(false)
   const [isHydrated, setIsHydrated] = useState(false)
@@ -147,13 +146,9 @@ export function CandlestickChart() {
 
                   {isMobile ? (
                     <motion.g
-                      initial={{ opacity: 0, scaleY: 0 }}
-                      animate={{ opacity: 1, scaleY: 1 }}
-                      transition={{
-                        opacity: { delay: i * 0.07, duration: 0.55, ease: "easeOut" },
-                        scaleY: { delay: i * 0.07, duration: 0.62, ease: [0.34, 1.56, 0.64, 1] },
-                      }}
-                      style={{ transformOrigin: `${x}px ${wickBottom}px` }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: i * 0.07, duration: 0.55, ease: "easeOut" }}
                       className="pointer-events-none"
                     >
                       <line x1={x} y1={wickTop} x2={x} y2={bodyTop} stroke={color} strokeWidth={1.5} strokeLinecap="round" />

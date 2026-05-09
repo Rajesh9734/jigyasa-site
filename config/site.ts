@@ -4,11 +4,12 @@ export const siteConfig = {
   url: "https://jigyasacapital.com",
   description:
     "NEPSE and FX training, capital investment, and advisory services for smarter financial decisions.",
-  email: "info@jigyasacapital.com",
+  email: "jigyasacapital@jigyasacapital.com",
   phone: "+977 9805673250",
   displayPhone: "+977 9805673250",
   address: "Kathmandu, Nepal",
   locale: "en_US",
+  contactEndpoint: "https://25f5g5ugci.execute-api.us-east-1.amazonaws.com/contact",
 }
 
 export const logo = {

@@ -4,9 +4,12 @@ import { WhatsAppFloat } from "@/components/shared/whatsapp-float"
 import { AboutUs } from "@/components/sections/about-us"
 import { ContactMap } from "@/components/sections/contact-map"
 import { CTASection } from "@/components/sections/cta-section"
+import { Disclaimer } from "@/components/sections/disclaimer"
+import { FeaturedCourse } from "@/components/sections/featured-course"
 import { Hero } from "@/components/sections/hero"
 import { Services } from "@/components/sections/services"
 import { StatsBar } from "@/components/sections/stats-bar"
+import { Testimonials } from "@/components/sections/testimonials"
 import { siteConfig } from "@/config/site"
 import { sameAsLinks } from "@/config/social-links"
 
@@ -33,11 +36,14 @@ export default function Home() {
     <main className="min-h-screen">
       <Header />
       <Hero />
-      <AboutUs />
-      <Services />
-      <ContactMap />
       <StatsBar />
+      <Services />
+      <FeaturedCourse />
+      <AboutUs />
+      <Testimonials />
+      <ContactMap />
       <CTASection />
+      <Disclaimer />
       <Footer />
       <WhatsAppFloat />
       <script

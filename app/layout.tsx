@@ -17,13 +17,21 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   applicationName: siteConfig.name,
+  appleWebApp: {
+    capable: true,
+    title: siteConfig.name,
+    statusBarStyle: 'default',
+  },
+  formatDetection: {
+    telephone: false,
+  },
   alternates: {
     canonical: '/',
   },
   icons: {
-    icon: logo.default,
-    shortcut: logo.default,
-    apple: logo.default,
+    icon: '/icons/icon-192.png',
+    shortcut: '/icons/icon-192.png',
+    apple: '/icons/icon-192.png',
   },
   openGraph: {
     title: `${siteConfig.name} - Empowering Financial Success`,
@@ -47,11 +55,18 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     images: [logo.default],
   },
+  other: {
+    'mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-title': siteConfig.name,
+    'apple-mobile-web-app-status-bar-style': 'default',
+  },
 }
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
+  themeColor: '#FFB800',
 }
 
 export default function RootLayout({
@@ -59,8 +74,37 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const pwaScript = `
+    window.__jigyasaInstallPrompt = null;
+    window.__jigyasaCanInstall = false;
+
+    window.addEventListener('beforeinstallprompt', function (event) {
+      event.preventDefault();
+      window.__jigyasaInstallPrompt = event;
+      window.__jigyasaCanInstall = true;
+      window.dispatchEvent(new Event('jigyasa-install-available'));
+    });
+
+    window.addEventListener('appinstalled', function () {
+      window.__jigyasaInstallPrompt = null;
+      window.__jigyasaCanInstall = false;
+      window.dispatchEvent(new Event('jigyasa-install-installed'));
+    });
+
+    if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js', { scope: '/' }).then(function () {
+          return navigator.serviceWorker.ready;
+        }).catch(function () {});
+      });
+    }
+  `
+
   return (
     <html lang="en" className="bg-background">
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: pwaScript }} />
+      </head>
       <body className={`${geist.variable} font-sans antialiased`}>
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}

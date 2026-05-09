@@ -4,25 +4,45 @@ import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { Menu, X } from "lucide-react"
+import { Download, Mail, Menu, Phone, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   hrefToSectionId,
   navItems,
   sectionIdToActiveHref,
 } from "@/config/navigation"
-import { logo } from "@/config/site"
+import { logo, siteConfig } from "@/config/site"
+
+type BeforeInstallPromptEvent = Event & {
+  prompt: () => Promise<void>
+  userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>
+}
+
+declare global {
+  interface Window {
+    __jigyasaInstallPrompt?: BeforeInstallPromptEvent | null
+    __jigyasaCanInstall?: boolean
+  }
+}
 
 export function Header() {
   const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
   const [isOverHero, setIsOverHero] = useState(pathname === "/")
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null)
+  const [canInstallApp, setCanInstallApp] = useState(false)
   const [activeSection, setActiveSection] = useState("")
   const [clickedHref, setClickedHref] = useState<string | null>(null)
 
   const handleScroll = useCallback(() => {
     setScrolled(window.scrollY > 50)
+
+    if (pathname === "/courses") {
+      setActiveSection("/courses")
+      setIsOverHero(false)
+      return
+    }
 
     let isCurrentlyOverHero = false
     const heroSection = document.getElementById("hero")
@@ -37,7 +57,7 @@ export function Header() {
     const scrollPosition = window.scrollY + 120 // offset for header height
 
     // Check only real page sections (deepest first so they take priority)
-    const sectionIds = ["contact", "about", "services"]
+    const sectionIds = ["contact", "courses", "about", "services"]
     let found = false
 
     for (const sectionId of sectionIds) {
@@ -74,6 +94,57 @@ export function Header() {
     handleScroll() // Run on mount
     return () => window.removeEventListener("scroll", handleScroll)
   }, [handleScroll])
+
+  useEffect(() => {
+    if (pathname === "/courses") {
+      setActiveSection("/courses")
+    }
+  }, [pathname])
+
+  useEffect(() => {
+    const isStandalone = () =>
+      window.matchMedia("(display-mode: standalone)").matches ||
+      ("standalone" in navigator &&
+        (navigator as Navigator & { standalone?: boolean }).standalone === true)
+
+    const syncInstallPrompt = () => {
+      const prompt = window.__jigyasaInstallPrompt || null
+      setInstallPrompt(prompt)
+      setCanInstallApp(Boolean(prompt && !isStandalone()))
+    }
+
+    syncInstallPrompt()
+
+    const handleBeforeInstallPrompt = (event: Event) => {
+      event.preventDefault()
+
+      if (!isStandalone()) {
+        window.__jigyasaInstallPrompt = event as BeforeInstallPromptEvent
+        window.__jigyasaCanInstall = true
+        setInstallPrompt(window.__jigyasaInstallPrompt)
+        setCanInstallApp(true)
+      }
+    }
+
+    const handleAppInstalled = () => {
+      window.__jigyasaInstallPrompt = null
+      window.__jigyasaCanInstall = false
+      setInstallPrompt(null)
+      setCanInstallApp(false)
+    }
+
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt)
+    window.addEventListener("appinstalled", handleAppInstalled)
+    window.addEventListener("jigyasa-install-available", syncInstallPrompt)
+    window.addEventListener("jigyasa-install-installed", handleAppInstalled)
+
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt)
+      window.removeEventListener("appinstalled", handleAppInstalled)
+      window.removeEventListener("jigyasa-install-available", syncInstallPrompt)
+      window.removeEventListener("jigyasa-install-installed", handleAppInstalled)
+    }
+  }, [])
 
   // Clear the clickedHref after user scrolls away from that section
   useEffect(() => {
@@ -125,11 +196,31 @@ export function Header() {
     setMobileMenuOpen(false)
   }
 
+  const handleInstallApp = async () => {
+    const prompt = installPrompt || window.__jigyasaInstallPrompt || null
+
+    if (!prompt) {
+      return
+    }
+
+    await prompt.prompt()
+    await prompt.userChoice
+    window.__jigyasaInstallPrompt = null
+    window.__jigyasaCanInstall = false
+    setInstallPrompt(null)
+    setCanInstallApp(false)
+    setMobileMenuOpen(false)
+  }
+
   const resolveNavHref = (href: string) => {
+    if (href.startsWith("/")) return href
     if (pathname === "/") return href
     if (href === "#") return "/"
     return `/${href}`
   }
+
+  const useLightHeader = !mobileMenuOpen && isOverHero
+  const headerLogo = useLightHeader ? logo.light : logo.default
 
   return (
     <>
@@ -137,8 +228,10 @@ export function Header() {
       className={`fixed top-0 w-full border-b transition-all duration-300 ${
         mobileMenuOpen ? "z-[70]" : "z-50"
       } ${
-        isOverHero
-          ? "border-white/0 bg-white/[0.06] shadow-md backdrop-blur-md"
+        mobileMenuOpen
+          ? "border-slate-200 bg-[#f8fbff] shadow-sm"
+          : isOverHero
+          ? "border-white/0 bg-white/[0.06] shadow-sm shadow-black/20 backdrop-blur-md"
           : scrolled
             ? "border-slate-200 bg-white/85 shadow-md backdrop-blur-md"
             : "border-slate-100 bg-white shadow-sm"
@@ -149,25 +242,40 @@ export function Header() {
         <Link href="/" className="flex items-center gap-2">
           <div className="flex items-center">
             <Image
-              src={isOverHero ? logo.light : logo.default}
+              src={headerLogo}
               alt="Jigyasa Capital Logo"
               width={50}
               height={50}
               className="h-12 w-12 object-contain"
             />
             <div className="ml-2 flex flex-col">
-              <span className="text-xl font-bold leading-tight text-[#f5a623]">
+              <span
+                className={`text-xl font-bold leading-tight ${
+                  useLightHeader ? "text-[#FFB800]" : "text-[#2439A9]"
+                }`}
+              >
                 JIGYASA
               </span>
               <span
                 className={`block text-center text-[12px] font-semibold tracking-wider ${
-                  isOverHero ? "text-white/85" : "text-[#2563eb]"
+                  useLightHeader ? "text-white/85" : "text-[#2563eb]"
                 }`}
               >
                 CAPITAL
               </span>
             </div>
           </div>
+          <span
+            className={`rounded-full border px-1.5 py-px text-[9px] font-semibold uppercase tracking-wide ${
+              useLightHeader
+                ? "border-white/30 bg-white/10 text-white/85"
+                : "border-blue-100 bg-blue-50 text-[#2439A9]"
+            }`}
+            aria-label="Website beta"
+            title="Website beta"
+          >
+            Beta
+          </span>
         </Link>
 
         {/* Desktop / Tablet Navigation (visible at md: 768px+) */}
@@ -178,12 +286,12 @@ export function Header() {
               href={resolveNavHref(item.href)}
               onClick={() => handleNavClick(item.href)}
               className={`font-medium transition-colors ${
-                isOverHero
+                useLightHeader
                   ? "text-white/85 hover:text-[#ffd166]"
                   : "text-[#0a1a2e] hover:text-[#2439A9]"
               } ${
                 activeSection === item.href
-                  ? isOverHero
+                  ? useLightHeader
                     ? "text-[#ffd166]"
                     : "text-[#2439A9]"
                   : ""
@@ -198,9 +306,9 @@ export function Header() {
         <Button
           asChild
           className={`hidden px-4 text-xs font-semibold  transition-all duration-300 md:flex md:rounded-md lg:px-6 lg:text-sm ${
-            isOverHero
-              ? "bg-[#ffffff] text-[#1a1a1a] shadow-sm hover:scale-105 hover:bg-[#ffffff] hover:text-[#0a1a2e]"
-              : "bg-[#2439A9] text-white hover:bg-[#2439A9] hover:text-white border-0 shadow-sm hover:scale-105"
+            useLightHeader
+              ? "bg-[#ffffff] text-[#1a1a1a] shadow-sm hover:-translate-y-0.5 hover:bg-[#ffffff] hover:text-[#0a1a2e] hover:shadow-md"
+              : "bg-[#2439A9] text-white hover:-translate-y-0.5 hover:bg-[#1f3190] hover:text-white border-0 shadow-sm hover:shadow-md"
           }`}
         >
           <Link href="/contact">Join Class</Link>
@@ -210,7 +318,7 @@ export function Header() {
         <button
           type="button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className={`relative z-50 flex h-10 w-10 items-center justify-center rounded-lg transition-colors md:hidden ${
+          className={`relative z-50 flex h-10 w-10 touch-manipulation items-center justify-center rounded-lg transition-colors md:hidden ${
             mobileMenuOpen
               ? "text-[#0a1a2e] hover:bg-gray-100"
               : isOverHero
@@ -237,35 +345,30 @@ export function Header() {
       </div>
     </header>
 
-      {/* Mobile Menu Overlay (only below md) */}
-      <div
-        className={`fixed inset-0 z-[55] bg-black/50 backdrop-blur-sm transition-opacity duration-300 md:hidden ${
-          mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
-        onClick={() => setMobileMenuOpen(false)}
-        aria-hidden="true"
-      />
-
-      {/* Mobile Menu Panel (only below md) */}
+      {/* Mobile Full-Screen Menu (only below md) */}
       <div
         id="mobile-menu"
-        className={`fixed right-0 top-0 z-[60] h-dvh w-72 max-w-[85vw] bg-white shadow-2xl transition-transform duration-300 ease-in-out md:hidden ${
-          mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+        className={`fixed inset-x-0 bottom-0 top-[65px] z-[60] bg-[#f8fbff] transition-all duration-300 md:hidden ${
+          mobileMenuOpen
+            ? "pointer-events-auto translate-y-0 opacity-100"
+            : "pointer-events-none -translate-y-3 opacity-0"
         }`}
         aria-hidden={!mobileMenuOpen}
       >
-        <div className="flex flex-col pt-20 px-6">
-          {/* Nav Items */}
-          <nav className="flex flex-col gap-1">
+        <div className="flex h-full flex-col overflow-y-auto px-5 py-7">
+          <nav className="flex flex-col gap-2">
+            <p className="px-4 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+              Menu
+            </p>
             {navItems.map((item, index) => (
               <Link
                 key={item.label}
                 href={resolveNavHref(item.href)}
                 onClick={() => handleNavClick(item.href)}
-                className={`rounded-lg px-4 py-3 text-base font-medium transition-all duration-200 ${
+                className={`relative touch-manipulation rounded-md px-4 py-3.5 text-base font-semibold transition-all duration-200 ${
                   activeSection === item.href
-                    ? "bg-blue-50 text-[#2439A9]"
-                    : "text-[#0a1a2e] hover:bg-gray-50 hover:text-[#2439A9]"
+                    ? "bg-blue-50 pl-5 text-[#2439A9] before:absolute before:left-0 before:top-3 before:h-6 before:w-1 before:rounded-full before:bg-[#2439A9]"
+                    : "text-[#0a1a2e] hover:bg-white hover:text-[#2439A9]"
                 }`}
                 style={{
                   animationDelay: `${index * 50}ms`,
@@ -276,18 +379,46 @@ export function Header() {
             ))}
           </nav>
 
-          {/* Divider */}
-          <div className="my-6 h-px bg-gray-200" />
+          <div className="mt-8 border-t border-slate-200 pt-6">
+            <Button
+              asChild
+              className="h-12 w-full rounded-md border border-transparent bg-[#2439A9] px-6 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:bg-[#1f3190] hover:text-white"
+            >
+              <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>
+                Join Class
+              </Link>
+            </Button>
+            <Button
+              type="button"
+              onClick={handleInstallApp}
+              className="mt-3 h-12 w-full rounded-md border border-slate-200 bg-white px-6 text-sm font-semibold text-[#2439A9] shadow-sm transition-all duration-300 hover:bg-blue-50 hover:text-[#2439A9]"
+            >
+              <Download className="h-4 w-4" strokeWidth={1.8} />
+              Install App
+            </Button>
+          </div>
 
-          {/* Mobile CTA Button */}
-          <Button
-            asChild
-            className="w-full rounded-full border border-transparent bg-[#2439A9] px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:bg-[#2439A9] hover:text-white"
-          >
-            <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>
-              Join Class
-            </Link>
-          </Button>
+          <div className="mt-auto border-t border-slate-200 pt-5">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+              Contact
+            </p>
+            <div className="space-y-3 text-sm font-medium text-slate-700">
+              <a
+                href={`tel:${siteConfig.phone}`}
+                className="flex items-center gap-3 transition-colors hover:text-[#2439A9]"
+              >
+                <Phone className="h-4 w-4 text-[#2439A9]" strokeWidth={1.8} />
+                {siteConfig.displayPhone}
+              </a>
+              <a
+                href={`mailto:${siteConfig.email}`}
+                className="flex items-center gap-3 transition-colors hover:text-[#2439A9]"
+              >
+                <Mail className="h-4 w-4 text-[#2439A9]" strokeWidth={1.8} />
+                {siteConfig.email}
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </>

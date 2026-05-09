@@ -83,3 +83,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .hero-primary-button:hover {
+    background-color: #FFB800 !important;
+  }
+}
