@@ -16,6 +16,19 @@ const features = [
   },
 ]
 
+const aboutImages = [
+  {
+    src: "/images/about-trading.jpg",
+    alt: "Trading workspace with multiple monitors",
+    delay: "0s",
+  },
+  {
+    src: "/images/about-learning.png",
+    alt: "Financial market learning session with trading charts",
+    delay: "-6s",
+  },
+]
+
 export function AboutUs() {
   return (
     <section id="about" className="bg-white py-24 lg:py-32">
@@ -32,14 +45,19 @@ export function AboutUs() {
                 />
               ))}
             </div>
-            <div className="relative overflow-hidden rounded-lg shadow-xl">
-              <Image
-                src="/images/about-trading.jpg"
-                alt="Trading workspace with multiple monitors"
-                width={600}
-                height={400}
-                className="h-auto w-full object-cover"
-              />
+            <div className="about-image-frame relative aspect-[3/2] overflow-hidden rounded-lg shadow-xl">
+              {aboutImages.map((image, index) => (
+                <Image
+                  key={image.src}
+                  src={image.src}
+                  alt={image.alt}
+                  fill
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  priority={index === 0}
+                  className="about-carousel-image object-cover"
+                  style={{ animationDelay: image.delay }}
+                />
+              ))}
               {/* Logo overlay */}
               <div className="absolute bottom-4 left-4 rounded bg-[#0a1a2e]/80 px-3 py-2">
                 <span className="text-sm font-bold text-white">JIGYASA</span>

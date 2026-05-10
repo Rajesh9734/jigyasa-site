@@ -148,7 +148,9 @@ function StatCard({
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setHasEntered(true)
+          window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(() => setHasEntered(true))
+          })
           observer.disconnect()
         }
       },

@@ -88,4 +88,84 @@
   .hero-primary-button:hover {
     background-color: #FFB800 !important;
   }
+
+  .about-carousel-image {
+    opacity: 0;
+    animation: about-image-fade 12s ease-in-out infinite;
+  }
+
+  .about-image-frame:hover .about-carousel-image {
+    animation-play-state: paused;
+  }
+
+}
+
+@keyframes about-image-fade {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  42% {
+    opacity: 1;
+    transform: scale(1.035);
+  }
+
+  50% {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+
+  92% {
+    opacity: 0;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-carousel-image {
+    animation: none;
+    opacity: 0;
+  }
+
+  .about-carousel-image:first-child {
+    opacity: 1;
+  }
+}
+
+.services-top-row,
+.services-bottom-row {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.services-row-detail {
+  min-width: 0;
+}
+
+@media (min-width: 640px) {
+  .services-top-row,
+  .services-bottom-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .services-top-row .services-row-detail,
+  .services-bottom-row .services-row-detail {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1024px) {
+  .services-top-row {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  }
+
+  .services-bottom-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
